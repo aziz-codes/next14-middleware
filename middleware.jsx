@@ -2,7 +2,9 @@ import { NextResponse } from "next/server";
 
 export async function middleware(request) {
   const path = request.nextUrl.pathname;
-  const cookies = await request.cookies;
+  const cookies =
+    (await request.cookies.get("next-auth.session-token")?.value) || "";
+  console.log(cookies);
 
   const isPublicPath = path === "/login";
 
@@ -17,5 +19,5 @@ export async function middleware(request) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ["/", "/products", "/account", "/login", "/users"],
+  matcher: ["/", "/products", "/account", "/login", "/users", "/about"],
 };
