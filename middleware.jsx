@@ -1,14 +1,21 @@
 import { NextResponse } from "next/server";
 
-// This function can be marked `async` if using `await` inside
-export function middleware(request) {
-  let user = false;
-  if (!user) {
-    return NextResponse.redirect(new URL("/", request.url));
+export async function middleware(request) {
+  const path = request.nextUrl.pathname;
+  const cookies = await request.cookies;
+
+  const isPublicPath = path === "/login";
+
+  if (isPublicPath && cookies) {
+    return NextResponse.redirect(new URL("/", request.nextUrl));
+  }
+
+  if (!isPublicPath && !cookies) {
+    return NextResponse.redirect(new URL("/login", request.nextUrl));
   }
 }
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ["/products", "/users", "/account", "/about"],
+  matcher: ["/", "/products", "/account", "/login", "/users"],
 };

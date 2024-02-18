@@ -1,15 +1,27 @@
 "use client";
 import Link from "next/link";
 import React from "react";
-import { usePathname } from "next/navigation";
+import { signOut, useSession } from "next-auth/react";
 const Navbar = () => {
-  const pathName = usePathname();
+  const { data: session } = useSession();
 
+  const handleLogout = async () => {
+    await signOut({
+      callbackUrl: "/login",
+    });
+  };
   return (
     <>
-      {pathName === "/" ? null : (
+      {!session ? (
+        <h4>No session</h4>
+      ) : (
         <div className="h-14 flex w-full border-b items-center px-2 justify-between">
-          <h4>Navbar</h4>
+          <button
+            className="bg-sky-500 border-none rounded-md text-white px-2 py-1"
+            onClick={handleLogout}
+          >
+            {session ? session.user.name : "Logout"}
+          </button>
           <div className="flex items-center gap-8">
             <Link href="/">Home</Link>
             <Link href="/products">Products</Link>
