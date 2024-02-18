@@ -12,16 +12,8 @@ const Navbar = () => {
   };
   return (
     <>
-      {!session ? (
-        <h4>No session</h4>
-      ) : (
+      {session && (
         <div className="h-14 flex w-full border-b items-center px-2 justify-between">
-          <button
-            className="bg-sky-500 border-none rounded-md text-white px-2 py-1"
-            onClick={handleLogout}
-          >
-            {session ? session.user.name : "Logout"}
-          </button>
           <div className="flex items-center gap-8">
             <Link href="/">Home</Link>
             <Link href="/products">Products</Link>
@@ -29,6 +21,11 @@ const Navbar = () => {
             <Link href="/users">Users</Link>
             <Link href="/account">Account</Link>
           </div>
+          <img
+            src={session.user.image}
+            className="h-10 w-10 rounded-full border p-1"
+            onClick={handleLogout}
+          />
         </div>
       )}
     </>
